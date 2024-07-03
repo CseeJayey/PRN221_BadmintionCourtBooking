@@ -13,12 +13,13 @@ namespace Badminton.DataAccess.Models
 
         public string CustomerId { get; set; } = null!;
         public string? FullName { get; set; }
-        public string? Username { get; set; }
-        public string? PasswordHash { get; set; }
+        public string Username { get; set; } = null!;
+        public string PasswordHash { get; set; } = null!;
         public string? Dob { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Status { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }

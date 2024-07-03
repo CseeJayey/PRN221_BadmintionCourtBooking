@@ -13,6 +13,17 @@ namespace BadmintonCourtBooking
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddSignalR();
+
+            builder.Services.AddDbContext<BadmintonManagmentDBContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DB"))
+                .LogTo(Console.WriteLine, LogLevel.Information);
+                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            });
+
+            //var sessionDurationConfig = builder.Configuration.GetSection("Settings:SessionDuration").Value;
+            //var sessionDuration = double.TryParse(sessionDurationConfig, out double duration) ? duration : 10.0;
 
             var app = builder.Build();
 
@@ -23,12 +34,7 @@ namespace BadmintonCourtBooking
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            builder.Services.AddDbContext<BadmintonManagmentDBContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DB"))
-                .LogTo(Console.WriteLine, LogLevel.Information);
-                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

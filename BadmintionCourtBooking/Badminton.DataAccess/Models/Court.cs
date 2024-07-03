@@ -7,15 +7,14 @@ namespace Badminton.DataAccess.Models
     {
         public Court()
         {
-            TimeSlots = new HashSet<TimeSlot>();
+            Bookings = new HashSet<Booking>();
         }
 
-        public string CourtId { get; set; } = null!;
-        public int? TimeSlotId { get; set; }
+        public Guid CourtId { get; set; }
         public string? Name { get; set; }
         public string? Location { get; set; }
+        public bool? IsDeleted { get; set; }
 
-        public virtual TimeSlot? TimeSlot { get; set; }
-        public virtual ICollection<TimeSlot> TimeSlots { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

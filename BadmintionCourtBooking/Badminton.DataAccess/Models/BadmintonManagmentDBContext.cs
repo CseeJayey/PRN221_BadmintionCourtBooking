@@ -24,7 +24,6 @@ namespace Badminton.DataAccess.Models
         public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<StaffCourt> StaffCourts { get; set; } = null!;
-        public virtual DbSet<TimeSlot> TimeSlots { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,46 +39,49 @@ namespace Badminton.DataAccess.Models
             modelBuilder.Entity<Booking>(entity =>
             {
                 entity.Property(e => e.BookingId)
-                    .HasMaxLength(50)
+                    .ValueGeneratedNever()
                     .HasColumnName("BookingID");
 
                 entity.Property(e => e.BookingType).HasMaxLength(50);
+
+                entity.Property(e => e.CourtId).HasColumnName("CourtID");
 
                 entity.Property(e => e.CustomerId)
                     .HasMaxLength(50)
                     .HasColumnName("CustomerID");
 
+                entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+
+                entity.Property(e => e.ReservedDuration).HasColumnType("time(4)");
+
+                entity.Property(e => e.Status).HasMaxLength(50);
+
                 entity.Property(e => e.TimeSlotId).HasColumnName("TimeSlotID");
 
                 entity.Property(e => e.TotalHours).HasMaxLength(10);
 
+                entity.HasOne(d => d.Court)
+                    .WithMany(p => p.Bookings)
+                    .HasForeignKey(d => d.CourtId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Bookings_Courts");
+
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bookings_Customers");
-
-                entity.HasOne(d => d.TimeSlot)
-                    .WithMany(p => p.Bookings)
-                    .HasForeignKey(d => d.TimeSlotId)
-                    .HasConstraintName("FK_Bookings_TimeSlots");
             });
 
             modelBuilder.Entity<Court>(entity =>
             {
                 entity.Property(e => e.CourtId)
-                    .HasMaxLength(50)
+                    .ValueGeneratedNever()
                     .HasColumnName("CourtID");
 
                 entity.Property(e => e.Location).HasMaxLength(50);
 
                 entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.TimeSlotId).HasColumnName("TimeSlotID");
-
-                entity.HasOne(d => d.TimeSlot)
-                    .WithMany(p => p.Courts)
-                    .HasForeignKey(d => d.TimeSlotId)
-                    .HasConstraintName("FK_Courts_TimeSlots");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -121,7 +123,9 @@ namespace Badminton.DataAccess.Models
 
                 entity.Property(e => e.PhoneNumber).HasMaxLength(20);
 
-                entity.Property(e => e.RoleId).HasColumnName("RoleID");
+                entity.Property(e => e.RoleId)
+                    .HasMaxLength(50)
+                    .HasColumnName("RoleID");
 
                 entity.Property(e => e.Status).HasMaxLength(50);
 
@@ -130,6 +134,7 @@ namespace Badminton.DataAccess.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_Roles");
             });
 
@@ -137,9 +142,7 @@ namespace Badminton.DataAccess.Models
             {
                 entity.HasNoKey();
 
-                entity.Property(e => e.CourtId)
-                    .HasMaxLength(50)
-                    .HasColumnName("CourtID");
+                entity.Property(e => e.CourtId).HasColumnName("CourtID");
 
                 entity.Property(e => e.ManagerId)
                     .HasMaxLength(50)
@@ -166,9 +169,7 @@ namespace Badminton.DataAccess.Models
                     .HasMaxLength(50)
                     .HasColumnName("PaymentID");
 
-                entity.Property(e => e.BookingId)
-                    .HasMaxLength(50)
-                    .HasColumnName("BookingID");
+                entity.Property(e => e.BookingId).HasColumnName("BookingID");
 
                 entity.Property(e => e.CustomerId)
                     .HasMaxLength(50)
@@ -181,18 +182,20 @@ namespace Badminton.DataAccess.Models
                 entity.HasOne(d => d.Booking)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.BookingId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Payment_Bookings");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Payment_Customers");
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleId)
-                    .ValueGeneratedNever()
+                    .HasMaxLength(50)
                     .HasColumnName("RoleID");
 
                 entity.Property(e => e.Description).HasMaxLength(50);
@@ -204,9 +207,7 @@ namespace Badminton.DataAccess.Models
             {
                 entity.HasNoKey();
 
-                entity.Property(e => e.CourtId)
-                    .HasMaxLength(50)
-                    .HasColumnName("CourtID");
+                entity.Property(e => e.CourtId).HasColumnName("CourtID");
 
                 entity.Property(e => e.StaffId)
                     .HasMaxLength(50)
@@ -223,24 +224,6 @@ namespace Badminton.DataAccess.Models
                     .HasForeignKey(d => d.StaffId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_StaffCourts_Employees");
-            });
-
-            modelBuilder.Entity<TimeSlot>(entity =>
-            {
-                entity.HasKey(e => e.TimeSlotsId);
-
-                entity.Property(e => e.TimeSlotsId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("TimeSlotsID");
-
-                entity.Property(e => e.CourtId)
-                    .HasMaxLength(50)
-                    .HasColumnName("CourtID");
-
-                entity.HasOne(d => d.Court)
-                    .WithMany(p => p.TimeSlots)
-                    .HasForeignKey(d => d.CourtId)
-                    .HasConstraintName("FK_TimeSlots_Courts");
             });
 
             OnModelCreatingPartial(modelBuilder);
