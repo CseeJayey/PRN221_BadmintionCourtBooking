@@ -1,6 +1,7 @@
 
 
 using Badminton.DataAccess.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace BadmintonCourtBooking
@@ -13,6 +14,12 @@ namespace BadmintonCourtBooking
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/AccountPages/Login";
+                options.AccessDeniedPath = "/AccountPages/Login";
+            });
             builder.Services.AddSignalR();
 
             builder.Services.AddDbContext<BadmintonManagmentDBContext>(options =>
@@ -26,6 +33,11 @@ namespace BadmintonCourtBooking
             //var sessionDuration = double.TryParse(sessionDurationConfig, out double duration) ? duration : 10.0;
 
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<BadmintonManagmentDBContext>();
+                dbContext.Database.Migrate();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -40,8 +52,9 @@ namespace BadmintonCourtBooking
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.MapGet("/", () => Results.Redirect("/AccountPages/Login"));
             app.MapRazorPages();
 
             app.Run();
