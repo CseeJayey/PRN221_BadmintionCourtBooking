@@ -54,7 +54,7 @@ namespace BadmintonCourtBooking
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapGet("/", () => Results.Redirect("/AccountPages/Login"));
+            app.MapGet("/", () => Results.Redirect("/Index"));
             app.MapRazorPages();
 
             app.Run();
