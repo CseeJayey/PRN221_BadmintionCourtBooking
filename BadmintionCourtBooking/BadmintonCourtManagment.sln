@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Badminton.DataAccess", "Bad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Badminton.Business", "Badminton.Business\Badminton.Business.csproj", "{62D92920-1878-420E-93DC-6D2641FA0EC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadmintonCourtBooking", "BadmintonCourtBooking\BadmintonCourtBooking.csproj", "{3C4C7C0B-2278-4298-86CE-24AF9A903437}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BadmintonCourtBooking", "BadmintonCourtBooking\BadmintonCourtBooking.csproj", "{3C4C7C0B-2278-4298-86CE-24AF9A903437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

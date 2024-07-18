@@ -1,0 +1,27 @@
+﻿@page
+@model BadmintonCourtBooking.Pages.BookCourtPages.StaffToCourtModel
+@{
+    ViewData["Title"] = "Assign Staff to Court";
+}
+
+<h2>Assign Staff to Court</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="AddStaffToCourtDTO.StaffId"></label>
+        <input asp-for="AddStaffToCourtDTO.StaffId" class="form-control" />
+        <span asp-validation-for="AddStaffToCourtDTO.StaffId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AddStaffToCourtDTO.CourtId"></label>
+        <input asp-for="AddStaffToCourtDTO.CourtId" class="form-control" />
+        <span asp-validation-for="AddStaffToCourtDTO.CourtId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Assign</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

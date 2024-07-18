@@ -1,0 +1,77 @@
+﻿@page
+@model BadmintonCourtBooking.Pages.BookCourtPages.CourtBookModel
+@{
+    ViewData["Title"] = "Book Court";
+}
+
+<h2>Book a Court</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.CustomerId"></label>
+        <input asp-for="BookCourtDTO.CustomerId" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.CustomerId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.CourtId"></label>
+        <input asp-for="BookCourtDTO.CourtId" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.CourtId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.TimeSlotId"></label>
+        <input asp-for="BookCourtDTO.TimeSlotId" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.TimeSlotId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.BookingType"></label>
+        <input asp-for="BookCourtDTO.BookingType" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.BookingType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.TotalHours"></label>
+        <input asp-for="BookCourtDTO.TotalHours" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.TotalHours" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.StartTime"></label>
+        <input asp-for="BookCourtDTO.StartTime" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.StartTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.EndTime"></label>
+        <input asp-for="BookCourtDTO.EndTime" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.EndTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.BookingDate"></label>
+        <input asp-for="BookCourtDTO.BookingDate" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.BookingDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.Status"></label>
+        <input asp-for="BookCourtDTO.Status" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.PeopleCount"></label>
+        <input asp-for="BookCourtDTO.PeopleCount" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.PeopleCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.PhoneNumber"></label>
+        <input asp-for="BookCourtDTO.PhoneNumber" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BookCourtDTO.ReservedDuration"></label>
+        <input asp-for="BookCourtDTO.ReservedDuration" class="form-control" />
+        <span asp-validation-for="BookCourtDTO.ReservedDuration" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Book</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
